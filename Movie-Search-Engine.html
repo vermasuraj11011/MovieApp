@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>Search Movie</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: aliceblue;
+            color: rgb(97, 95, 95);
+
+        }
+
+        #container {
+            width: 60%;
+            height: 450px;
+            padding: 20px;
+            background-color: bisque;
+            border: black;
+            margin: 50px auto;
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        #container div {
+            justify-content: space-between;
+        }
+
+        #container div form input {
+            height: 30px;
+            padding: 5px 20px;
+        }
+
+        #movie {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        img {
+            width: 20%;
+            margin: 10px 0;
+        }
+
+        #movie div {
+            width: 300px;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+        }
+
+        #movie div h2 {
+            width: 50%;
+            text-align: right;
+            margin-right: 10px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        #movie div strong {
+            width: 50%;
+            text-align: left;
+            margin-left: 10x;
+            font-size: 15px;
+            font-weight: 400;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div class="flex">
+            <h1>Search Movie</h1>
+            <form action="">
+                <input type="text" placeholder="Enter Movie Name" id="movieName">
+                <input type="submit">
+            </form>
+        </div>
+        <div id="movies">
+            <div id="movie">
+
+            </div>
+            <!-- <img src="https://omdbapi.com/src/poster.jpg" alt="">
+            <div>
+                <h2>Tittle</h2> <strong>Iron Man</strong>
+            </div>
+            <div>
+                <h2>Released</h2> <strong>03 Mar 2017</strong>
+            </div>
+            <div>
+                <h2>Rating</h2> <strong>7.4</strong>
+            </div>
+            <div>
+                <h2>Run Time</h2> <strong>75 min</strong>
+            </div> -->
+
+        </div>
+
+    </div>
+
+
+
+</body>
+
+</html>
+
+
+<script>
+
+
+    let form = document.querySelector('form')
+
+    form.addEventListener('submit', movieSearch)
+
+    function movieSearch(e) {
+
+        e.preventDefault();
+
+
+
+        search()
+    }
+
+    async function search() {
+        try {
+            let name = document.querySelector('#movieName').value
+            // let res = await fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=d8e46f93`)
+            let res = await fetch(`http://www.omdbapi.com/?t=${name}&apikey=d8e46f93`)
+            let data = await res.json();
+            // console.log('data:', data)
+
+            let moviediv1 = document.querySelector('#movies')
+            let moviediv = document.querySelector('#movie')
+            moviediv.remove();
+
+            let movieDivNew = document.createElement('div')
+            movieDivNew.setAttribute('id', 'movie')
+
+            let image = document.createElement('img');
+            image.src = data.Poster
+
+
+
+            let div1 = document.createElement('div');
+            let h21 = document.createElement('h2');
+            h21.textContent = 'Tittle :'
+            let strong1 = document.createElement('strong');
+            strong1.textContent = data.Title
+            div1.append(h21, strong1);
+
+            let div2 = document.createElement('div');
+            let h22 = document.createElement('h2');
+            h22.textContent = 'Released :'
+            let strong2 = document.createElement('strong');
+            strong2.textContent = data.Released
+            div2.append(h22, strong2);
+
+            let div3 = document.createElement('div');
+            let h23 = document.createElement('h2');
+            h23.textContent = 'IMDB Rating  :'
+            let strong3 = document.createElement('strong');
+            strong3.textContent = data.imdbRating
+            div3.append(h23, strong3);
+
+            let div4 = document.createElement('div');
+            let h24 = document.createElement('h2');
+            h24.textContent = 'Run Time:'
+            let strong4 = document.createElement('strong');
+            strong4.textContent = data.Runtime
+            div4.append(h24, strong4);
+
+            movieDivNew.append(image, div1, div2, div3, div4)
+
+            moviediv1.append(movieDivNew)
+
+
+        }
+        catch (err) {
+            console.log('err:', err)
+        }
+    }
+
+    // async function movieSearch() {
+    //     try {
+    //         // let res = await fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=d8e46f93`)
+    //         let res = await fetch(`http://www.omdbapi.com/?t=iron+men&apikey=d8e46f93`)
+    //         let data = await res.json();
+    //         console.log('data:', data)
+    //     }
+    //     catch (err) {
+    //         console.log('err:', err)
+    //     }
+    // }
+
+    // movieSearch()
+
+
+</script>
