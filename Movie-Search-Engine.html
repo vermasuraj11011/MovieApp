@@ -57,7 +57,7 @@
         }
 
         #movie div {
-            width: 300px;
+            width: 500px;
             display: flex;
             align-items: center;
             padding: 5px;
@@ -112,8 +112,6 @@
 
     </div>
 
-
-
 </body>
 
 </html>
@@ -136,15 +134,35 @@
     }
 
     async function search() {
+        let moviediv1 = document.querySelector('#movies')
+        let moviediv = document.querySelector('#movie')
         try {
             let name = document.querySelector('#movieName').value
             // let res = await fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=d8e46f93`)
             let res = await fetch(`http://www.omdbapi.com/?t=${name}&apikey=d8e46f93`)
             let data = await res.json();
-            // console.log('data:', data)
 
-            let moviediv1 = document.querySelector('#movies')
-            let moviediv = document.querySelector('#movie')
+
+            console.log('data:', data)
+            if (data.Response === "False") {
+                console.log('suraj')
+
+                moviediv.remove();
+                let movieDivNew = document.createElement('div')
+                movieDivNew.setAttribute('id', 'movie')
+
+                let image = document.createElement('img');
+                image.style.height = "200px"
+                image.style.width = "200px"
+                image.src = 'https://media4.giphy.com/media/IHOOMIiw5v9VS/giphy.webp?cid=ecf05e47ckm3k04k2ulb1npd8ositxyaks4kyk2qjlcl1bb6&rid=giphy.webp&ct=g'
+
+                movieDivNew.append(image)
+
+                moviediv1.append(movieDivNew)
+
+                return
+            }
+
             moviediv.remove();
 
             let movieDivNew = document.createElement('div')
@@ -152,8 +170,6 @@
 
             let image = document.createElement('img');
             image.src = data.Poster
-
-
 
             let div1 = document.createElement('div');
             let h21 = document.createElement('h2');
@@ -171,14 +187,14 @@
 
             let div3 = document.createElement('div');
             let h23 = document.createElement('h2');
-            h23.textContent = 'IMDB Rating  :'
+            h23.textContent = 'IMDB Rating :'
             let strong3 = document.createElement('strong');
             strong3.textContent = data.imdbRating
             div3.append(h23, strong3);
 
             let div4 = document.createElement('div');
             let h24 = document.createElement('h2');
-            h24.textContent = 'Run Time:'
+            h24.textContent = 'Run Time :'
             let strong4 = document.createElement('strong');
             strong4.textContent = data.Runtime
             div4.append(h24, strong4);
@@ -187,10 +203,13 @@
 
             moviediv1.append(movieDivNew)
 
+            // console.log('data:', data)
 
         }
         catch (err) {
-            console.log('err:', err)
+            // console.log('err:', err)
+            console.log('suraj')
+
         }
     }
 
@@ -210,3 +229,6 @@
 
 
 </script>
+
+
+<!-- https://media4.giphy.com/media/IHOOMIiw5v9VS/giphy.webp?cid=ecf05e47ckm3k04k2ulb1npd8ositxyaks4kyk2qjlcl1bb6&rid=giphy.webp&ct=g -->
