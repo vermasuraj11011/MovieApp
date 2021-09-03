@@ -191,12 +191,9 @@
 
         // console.log('names:', names)
 
-        if (names.length < 2) {
-            dropDown.style.display = 'none'
-            return false
-        }
-        // if (names.length === 0) {
+        // if (names.length < 2) {
         //     dropDown.style.display = 'none'
+        //     return false
         // }
 
         if (timerId) {
@@ -206,8 +203,13 @@
         //aven - is there any previous req? timmerid is there ? clear that 
 
         timerId = setTimeout(() => {
+            if (names.length === 0) {
+                dropDown.innerHTML = null
+                dropDown.style.display = 'none'
+                return
+            }
             main();
-        }, 300)
+        }, 500)
 
 
     }
