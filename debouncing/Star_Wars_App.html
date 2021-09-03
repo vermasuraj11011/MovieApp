@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Star Wars</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            transition: all 0.5s;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            display: flex;
+            /* align-items: center; */
+            justify-content: center;
+        }
+
+        #search {
+            /* margin-top: 100px; */
+            width: 40%;
+            /* height: 60%; */
+            /* background-color: rgba(206, 189, 168, 0.4); */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #search input {
+            height: 60px;
+            width: 80%;
+            border-radius: 2rem;
+            /* margin-top: 5px; */
+            background-color: rgb(0, 0, 0, 0.7);
+            font-size: 1rem;
+            color: rgb(255, 255, 255);
+            text-align: center;
+        }
+
+        #search input:focus {
+            outline: none;
+            border-color: antiquewhite;
+        }
+
+        #logo {
+            width: 20%;
+        }
+
+        #dropDown {
+            width: 80%;
+            padding: 5px 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            color: aliceblue;
+            background-color: rgb(0, 0, 0, 0.7);
+            display: none;
+        }
+
+        #dropDown div {
+            padding: 5px;
+        }
+
+        #dropDown div p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            /* padding: 5px 10px; */
+        }
+
+        #dropDown div p strong {
+            font-weight: 500;
+            font-size: 20px;
+        }
+
+        #dropDown div p span {
+            font-weight: 300;
+            font-size: 15px;
+        }
+
+        #dropDown div strong {
+            padding: 5px 10px;
+            font-weight: 300;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <canvas></canvas> -->
+    <img src="https://i.pinimg.com/originals/cb/3b/e5/cb3be5cf73cf5c0aa4c11e50e1c34f00.gif" alt="">
+    <div id="container">
+        <div id="search">
+            <div id="logo"><img src="https://pngimg.com/uploads/star_wars_logo/small/star_wars_logo_PNG39.png" alt="">
+            </div>
+            <input type="text" placeholder="Search Your Favorate Character">
+            <hr>
+            <div></div>
+            <div id="dropDown">
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+
+
+<script>
+
+    let dropDown = document.querySelector('#dropDown')
+    let input = document.querySelector('input')
+    let timerId;
+
+    input.addEventListener('input', debounce)
+
+    async function showCharacter(n) {
+        let res = await fetch(`https://swapi.dev/api/people/?search=${n}`)
+        let data = await res.json()
+
+        // console.log('data:', data)
+        return data.results
+    }
+
+    async function main() {
+        let names = input.value
+
+        let char = await showCharacter(names);
+
+        if (char === undefined) {
+            return false;
+        }
+        appendCharacters(char)
+    }
+
+    function appendCharacters(c) {
+
+        dropDown.innerHTML = null
+
+        dropDown.style.display = 'flex'
+        dropDown.style.flexDirection = 'column'
+
+
+        c.forEach(({ name, gender, birth_year }) => {
+            // console.log('name:', name, gender, birth_year)
+
+            let div = document.createElement('div')
+            let p = document.createElement('p')
+            let strong1 = document.createElement('strong')
+            strong1.innerText = name;
+            let span = document.createElement('span')
+            span.innerText = gender
+            p.append(strong1, span)
+            let strong2 = document.createElement('strong')
+            strong2.innerText = birth_year
+
+            div.append(p, strong2)
+            dropDown.appendChild(div)
+        });
+    }
+
+    function debounce() {
+
+        let names = input.value
+
+        // console.log('names:', names)
+
+        if (names.length < 2) {
+            dropDown.style.display = 'none'
+            return false
+        }
+        // if (names.length === 0) {
+        //     dropDown.style.display = 'none'
+        // }
+
+        if (timerId) {
+            clearTimeout(timerId);
+        }
+        // ave- 1st setTimeout created , timerId = 1;
+        //aven - is there any previous req? timmerid is there ? clear that 
+
+        timerId = setTimeout(() => {
+            main();
+        }, 300)
+
+
+    }
+
+
+
+
+</script>
