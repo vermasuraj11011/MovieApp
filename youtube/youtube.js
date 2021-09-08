@@ -9,7 +9,7 @@ async function displayMovieDefault() {
 	// let video = document.querySelector('.navbar__center__input').value;
 
 	let res = await fetch(
-		`https://youtube.googleapis.com/youtube/v3/search?q=trending+india&regionCode=IN&type=video&key=AIzaSyCRtsr9RbTDPUjvEVXteKP-P7sUbCfTe4M&maxResults=20`
+		`https://youtube.googleapis.com/youtube/v3/search?q=trending+india&regionCode=IN&type=video&key={API+key}&maxResults=20`
 	);
 
 	let data = await res.json();
